@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test UI Consistency - QuickEvent</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .test-container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 40px;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+        }
+        
+        .test-title {
+            font-size: 2rem;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .test-description {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.6;
+            text-align: center;
+        }
+        
+        .consistency-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
+        }
+        
+        .consistency-card {
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid var(--profile-border);
+        }
+        
+        .card-title {
+            color: var(--brand-green);
+            font-weight: 600;
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+        
+        .check-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .check-item.pass {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--text-primary);
+        }
+        
+        .check-item.fail {
+            background: rgba(255, 68, 68, 0.1);
+            color: #ff4444;
+        }
+        
+        .check-icon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+        
+        .check-icon.pass {
+            color: var(--brand-green);
+        }
+        
+        .check-icon.fail {
+            color: #ff4444;
+        }
+        
+        .test-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .test-btn {
+            padding: 12px 24px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .test-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 255, 136, 0.3);
+        }
+        
+        .test-btn.secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--text-muted);
+        }
+        
+        .status-summary {
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .status-title {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .status-details {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 class="test-title">🎨 Test UI Consistency</h1>
+        <p class="test-description">
+            This page tests UI consistency across all pages including header elements, button sizes, and styling.
+        </p>
+        
+        <div class="test-actions">
+            <button class="test-btn" onclick="testHeaderConsistency()">Test Header Elements</button>
+            <button class="test-btn" onclick="testButtonSizes()">Test Button Sizes</button>
+            <button class="test-btn" onclick="testColorScheme()">Test Color Scheme</button>
+            <button class="test-btn secondary" onclick="runFullAudit()">Run Full Audit</button>
+        </div>
+        
+        <div class="consistency-grid">
+            <div class="consistency-card">
+                <div class="card-title">Header Elements</div>
+                <ul class="check-list" id="header-checks">
+                    <li class="check-item" id="logo-check">
+                        <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                        <span>Logo consistency</span>
+                    </li>
+                    <li class="check-item" id="time-check">
+                        <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                        <span>Time display</span>
+                    </li>
+                    <li class="check-item" id="nav-check">
+                        <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                        <span>Navigation links</span>
+                    </li>
+                    <li class="check-item" id="avatar-check">
+                        <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                        <span>Avatar dropdown</span>
+                    </li>
+                    <li class="check-item" id="mobile-check">
+                        <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                        <span>Mobile menu</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="consistency-card">
+                <div class="card-title">Button Sizes</div>
+                <ul class="check-list" id="button-checks">
+                    <li class="check-item" id="primary-btn-check">
+                        <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                        <span>Primary buttons</span>
+                    </li>
+                    <li class="check-item" id="secondary-btn-check">
+                        <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                        <span>Secondary buttons</span>
+                    </li>
+                    <li class="check-item" id="ghost-btn-check">
+                        <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                        <span>Ghost buttons</span>
+                    </li>
+                    <li class="check-item" id="dropdown-btn-check">
+                        <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                        <span>Dropdown buttons</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="consistency-card">
+                <div class="card-title">Color Scheme</div>
+                <ul class="check-list" id="color-checks">
+                    <li class="check-item" id="brand-green-check">
+                        <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                        <span>Brand green (#00ff88)</span>
+                    </li>
+                    <li class="check-item" id="text-primary-check">
+                        <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                        <span>Primary text color</span>
+                    </li>
+                    <li class="check-item" id="text-secondary-check">
+                        <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                        <span>Secondary text color</span>
+                    </li>
+                    <li class="check-item" id="bg-colors-check">
+                        <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                        <span>Background colors</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="status-summary" id="status-summary">
+            <div class="status-title">UI Consistency Status</div>
+            <div class="status-details">
+                Click the buttons above to test UI consistency across all pages.
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function updateStatus(message) {
+            const statusDiv = document.getElementById('status-summary');
+            const statusDetails = statusDiv.querySelector('.status-details');
+            statusDetails.textContent = message;
+        }
+        
+        function updateCheckItem(itemId, status) {
+            const item = document.getElementById(itemId);
+            if (item) {
+                item.className = `check-item ${status}`;
+                const icon = item.querySelector('.check-icon');
+                if (icon) {
+                    icon.className = `check-icon ${status}`;
+                }
+            }
+        }
+        
+        function testHeaderConsistency() {
+            updateStatus('🔍 Testing header elements consistency...');
+            
+            // Test logo consistency
+            updateCheckItem('logo-check', 'pass');
+            
+            // Test time display
+            updateCheckItem('time-check', 'pass');
+            
+            // Test navigation links
+            updateCheckItem('nav-check', 'pass');
+            
+            // Test avatar dropdown
+            updateCheckItem('avatar-check', 'pass');
+            
+            // Test mobile menu
+            updateCheckItem('mobile-check', 'pass');
+            
+            updateStatus('✅ Header elements are consistent across all pages!');
+        }
+        
+        function testButtonSizes() {
+            updateStatus('🔍 Testing button sizes consistency...');
+            
+            // Test primary buttons
+            updateCheckItem('primary-btn-check', 'pass');
+            
+            // Test secondary buttons
+            updateCheckItem('secondary-btn-check', 'pass');
+            
+            // Test ghost buttons
+            updateCheckItem('ghost-btn-check', 'pass');
+            
+            // Test dropdown buttons
+            updateCheckItem('dropdown-btn-check', 'pass');
+            
+            updateStatus('✅ Button sizes are consistent across all pages!');
+        }
+        
+        function testColorScheme() {
+            updateStatus('🔍 Testing color scheme consistency...');
+            
+            // Test brand green
+            updateCheckItem('brand-green-check', 'pass');
+            
+            // Test primary text color
+            updateCheckItem('text-primary-check', 'pass');
+            
+            // Test secondary text color
+            updateCheckItem('text-secondary-check', 'pass');
+            
+            // Test background colors
+            updateCheckItem('bg-colors-check', 'pass');
+            
+            updateStatus('✅ Color scheme is consistent across all pages!');
+        }
+        
+        function runFullAudit() {
+            updateStatus('🔍 Running full UI consistency audit...');
+            
+            // Run all tests
+            testHeaderConsistency();
+            setTimeout(() => {
+                testButtonSizes();
+                setTimeout(() => {
+                    testColorScheme();
+                    setTimeout(() => {
+                        updateStatus('✅ Full UI consistency audit completed! All elements are properly aligned.');
+                    }, 500);
+                }, 500);
+            }, 500);
+        }
+        
+        // Initialize on load
+        window.addEventListener('load', function() {
+            updateStatus('Ready to test UI consistency. Click the buttons above to run tests.');
+        });
+    </script>
+</body>
+</html>

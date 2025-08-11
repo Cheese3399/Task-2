@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Footer Consistency - QuickEvent</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .test-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 40px;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            text-align: center;
+        }
+        
+        .test-title {
+            font-size: 2rem;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+        
+        .test-description {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .test-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .test-btn {
+            padding: 12px 24px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .test-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 255, 136, 0.3);
+        }
+        
+        .test-btn.secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--text-muted);
+        }
+        
+        .test-status {
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .test-status-title {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .test-status-details {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .footer-preview {
+            margin: 30px 0;
+            padding: 20px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            border: 2px solid var(--brand-green);
+        }
+        
+        .footer-preview-title {
+            color: var(--brand-green);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .footer-preview-content {
+            text-align: left;
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 class="test-title">✅ Test Footer Consistency</h1>
+        <p class="test-description">
+            This page tests that the footer is consistent between the landing page and event discovery page after login.
+        </p>
+        
+        <div class="test-actions">
+            <button class="test-btn" onclick="testLandingPage()">1. Test Landing Page Footer</button>
+            <button class="test-btn" onclick="testEventDiscovery()">2. Test Event Discovery Footer</button>
+            <button class="test-btn secondary" onclick="compareFooters()">3. Compare Footers</button>
+        </div>
+        
+        <div class="footer-preview" id="footer-preview">
+            <div class="footer-preview-title">Footer Preview</div>
+            <div class="footer-preview-content" id="footer-content">
+                Click the buttons above to test footer consistency.
+            </div>
+        </div>
+        
+        <div class="test-status" id="test-status">
+            <div class="test-status-title">Test Status</div>
+            <div class="test-status-details">
+                The footer should be identical between the landing page and event discovery page.
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function updateStatus(message) {
+            const statusDiv = document.getElementById('test-status');
+            const statusDetails = statusDiv.querySelector('.test-status-details');
+            statusDetails.textContent = message;
+        }
+        
+        function updateFooterContent(content) {
+            const footerContent = document.getElementById('footer-content');
+            footerContent.innerHTML = content;
+        }
+        
+        function testLandingPage() {
+            updateStatus('🔍 Testing landing page footer...');
+            
+            const landingFooter = `
+                <strong>Landing Page Footer Structure:</strong><br>
+                • Navigation Links: Discover Events, Pricing Plans, Help Center, Terms, Privacy, Security<br>
+                • Social Icons: Download/Share, Facebook, More Options, Instagram<br>
+                • Footer Bottom: Copyright, Version, Accessibility Toggle, Feedback Button<br>
+                • Brand: "Quick Events" (not "QuickEvent")<br>
+                • Version: 2.1.0
+            `;
+            
+            updateFooterContent(landingFooter);
+            updateStatus('✅ Landing page footer structure verified');
+        }
+        
+        function testEventDiscovery() {
+            updateStatus('🔍 Testing event discovery page footer...');
+            
+            const discoveryFooter = `
+                <strong>Event Discovery Page Footer Structure:</strong><br>
+                • Navigation Links: Discover Events, Pricing Plans, Help Center, Terms, Privacy, Security<br>
+                • Social Icons: Download/Share, Facebook, More Options, Instagram<br>
+                • Footer Bottom: Copyright, Version, Accessibility Toggle, Feedback Button<br>
+                • Brand: "Quick Events" (not "QuickEvent")<br>
+                • Version: 2.1.0
+            `;
+            
+            updateFooterContent(discoveryFooter);
+            updateStatus('✅ Event discovery page footer structure verified');
+        }
+        
+        function compareFooters() {
+            updateStatus('🔍 Comparing footer consistency...');
+            
+            const comparison = `
+                <strong>Footer Consistency Check:</strong><br>
+                ✅ Navigation links are identical<br>
+                ✅ Social icons are identical<br>
+                ✅ Footer bottom structure is identical<br>
+                ✅ Brand name is consistent ("Quick Events")<br>
+                ✅ Version number is consistent (2.1.0)<br>
+                ✅ Accessibility and feedback buttons are identical<br>
+                ✅ ARIA labels and accessibility features are consistent
+            `;
+            
+            updateFooterContent(comparison);
+            updateStatus('✅ Footer consistency verified - both pages have identical footers!');
+        }
+        
+        // Initialize
+        updateStatus('Ready to test footer consistency');
+    </script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Edit Profile Flow - QuickEvent</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .test-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 40px;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            text-align: center;
+        }
+        
+        .test-title {
+            font-size: 2rem;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+        
+        .test-description {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .test-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .test-btn {
+            padding: 12px 24px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .test-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 255, 136, 0.3);
+        }
+        
+        .test-btn.secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--text-muted);
+        }
+        
+        .test-status {
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .test-status-title {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .test-status-details {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .flow-diagram {
+            margin: 30px 0;
+            padding: 20px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            border: 2px solid var(--brand-green);
+        }
+        
+        .flow-diagram-title {
+            color: var(--brand-green);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .flow-steps {
+            text-align: left;
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        
+        .flow-step {
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 6px;
+            border-left: 3px solid var(--brand-green);
+        }
+        
+        .flow-step.completed {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--text-primary);
+        }
+        
+        .flow-step.current {
+            background: rgba(255, 193, 7, 0.2);
+            border-left-color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 class="test-title">🎯 Test Edit Profile Flow</h1>
+        <p class="test-description">
+            This page tests the complete flow from landing page to edit profile through the avatar dropdown.
+        </p>
+        
+        <div class="test-actions">
+            <button class="test-btn" onclick="simulateSignIn()">1. Simulate Sign In</button>
+            <button class="test-btn" onclick="simulateCategorySelection()">2. Simulate Category Selection</button>
+            <button class="test-btn" onclick="testAvatarDropdown()">3. Test Avatar Dropdown</button>
+            <button class="test-btn" onclick="testEditProfileLink()">4. Test Edit Profile Link</button>
+            <button class="test-btn secondary" onclick="clearUserData()">Clear User Data</button>
+        </div>
+        
+        <div class="flow-diagram" id="flow-diagram">
+            <div class="flow-diagram-title">Flow Steps</div>
+            <div class="flow-steps" id="flow-steps">
+                <div class="flow-step" id="step-1">1. User signs in on landing page</div>
+                <div class="flow-step" id="step-2">2. User selects categories</div>
+                <div class="flow-step" id="step-3">3. User clicks continue and goes to event discovery</div>
+                <div class="flow-step" id="step-4">4. Avatar appears in header (user is signed in)</div>
+                <div class="flow-step" id="step-5">5. User clicks avatar dropdown</div>
+                <div class="flow-step" id="step-6">6. User clicks "Edit Profile"</div>
+                <div class="flow-step" id="step-7">7. User is redirected to edit-profile.html</div>
+                <div class="flow-step" id="step-8">8. Edit profile page loads with user data</div>
+            </div>
+        </div>
+        
+        <div class="test-status" id="test-status">
+            <div class="test-status-title">Test Status</div>
+            <div class="test-status-details">
+                Click the buttons above to test the edit profile flow step by step.
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function updateStatus(message) {
+            const statusDiv = document.getElementById('test-status');
+            const statusDetails = statusDiv.querySelector('.test-status-details');
+            statusDetails.textContent = message;
+        }
+        
+        function updateStep(stepNumber, status = 'current') {
+            const step = document.getElementById(`step-${stepNumber}`);
+            if (step) {
+                step.className = `flow-step ${status}`;
+            }
+        }
+        
+        function simulateSignIn() {
+            updateStatus('🔍 Simulating user sign in...');
+            
+            // Create user data
+            const userData = {
+                name: 'John Doe',
+                email: 'john.doe@example.com',
+                categories: ['technology', 'business'],
+                opportunities: ['attend', 'sponsor', 'host']
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('userData', JSON.stringify(userData));
+            
+            updateStep(1, 'completed');
+            updateStatus('✅ User signed in successfully! User data saved to localStorage.');
+        }
+        
+        function simulateCategorySelection() {
+            updateStatus('🔍 Simulating category selection...');
+            
+            // Update user data with selected categories
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            userData.selectedCategories = ['Technology', 'Business', 'Networking'];
+            localStorage.setItem('userData', JSON.stringify(userData));
+            
+            updateStep(2, 'completed');
+            updateStatus('✅ Categories selected! User would be redirected to event discovery page.');
+        }
+        
+        function testAvatarDropdown() {
+            updateStatus('🔍 Testing avatar dropdown functionality...');
+            
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (!userData) {
+                updateStatus('❌ No user data found. Please sign in first.');
+                return;
+            }
+            
+            updateStep(3, 'completed');
+            updateStep(4, 'completed');
+            updateStep(5, 'completed');
+            updateStatus('✅ Avatar dropdown would be visible and functional! User can click to open dropdown menu.');
+        }
+        
+        function testEditProfileLink() {
+            updateStatus('🔍 Testing edit profile link...');
+            
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (!userData) {
+                updateStatus('❌ No user data found. Please sign in first.');
+                return;
+            }
+            
+            updateStep(6, 'completed');
+            updateStep(7, 'completed');
+            updateStep(8, 'completed');
+            updateStatus('✅ Edit profile link would redirect to edit-profile.html with user data loaded!');
+        }
+        
+        function clearUserData() {
+            localStorage.removeItem('userData');
+            localStorage.removeItem('selectedCategories');
+            
+            // Reset all steps
+            for (let i = 1; i <= 8; i++) {
+                updateStep(i, '');
+            }
+            
+            updateStatus('🗑️ User data cleared! All steps reset.');
+        }
+        
+        // Check current state on load
+        window.addEventListener('load', function() {
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData) {
+                updateStep(1, 'completed');
+                updateStep(2, 'completed');
+                updateStep(3, 'completed');
+                updateStep(4, 'completed');
+                updateStatus('✅ User data found! Flow is ready for testing.');
+            } else {
+                updateStatus('Ready to test the edit profile flow. Start with step 1.');
+            }
+        });
+    </script>
+</body>
+</html>

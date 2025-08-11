@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Continue Button - QuickEvent</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .test-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 40px;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            text-align: center;
+        }
+        
+        .test-title {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+        
+        .test-description {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .test-categories {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 30px 0;
+        }
+        
+        .test-category-card {
+            padding: 20px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .test-category-card:hover {
+            border-color: var(--brand-green);
+            transform: translateY(-2px);
+        }
+        
+        .test-category-card.selected {
+            border-color: var(--brand-green);
+            background: rgba(0, 255, 136, 0.1);
+        }
+        
+        .test-category-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .test-counter {
+            margin: 20px 0;
+            padding: 12px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        
+        .test-continue-btn {
+            padding: 12px 24px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .test-continue-btn.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .test-continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 255, 136, 0.3);
+        }
+        
+        .test-log {
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .test-log-item {
+            color: var(--text-secondary);
+            font-size: 12px;
+            margin: 4px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 class="test-title">Test Continue Button Functionality</h1>
+        <p class="test-description">
+            Click on category cards to select them. The continue button should appear when at least one category is selected.
+        </p>
+        
+        <div class="test-categories">
+            <div class="test-category-card" data-category="technology">
+                <div class="test-category-name">Technology</div>
+            </div>
+            <div class="test-category-card" data-category="business">
+                <div class="test-category-name">Business</div>
+            </div>
+            <div class="test-category-card" data-category="education">
+                <div class="test-category-name">Education</div>
+            </div>
+            <div class="test-category-card" data-category="health">
+                <div class="test-category-name">Health</div>
+            </div>
+            <div class="test-category-card" data-category="arts">
+                <div class="test-category-name">Arts</div>
+            </div>
+            <div class="test-category-card" data-category="sports">
+                <div class="test-category-name">Sports</div>
+            </div>
+        </div>
+        
+        <div class="test-counter" id="test-counter">
+            0 Categories Selected
+        </div>
+        
+        <button class="test-continue-btn" id="test-continue-btn" onclick="testContinue()">
+            Continue
+        </button>
+        
+        <div class="test-log" id="test-log">
+            <div class="test-log-item">Test started...</div>
+        </div>
+    </div>
+    
+    <script>
+        let selectedCategories = [];
+        
+        function log(message) {
+            const logDiv = document.getElementById('test-log');
+            const logItem = document.createElement('div');
+            logItem.className = 'test-log-item';
+            logItem.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logDiv.appendChild(logItem);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        function updateTestCounter() {
+            const selectedCards = document.querySelectorAll('.test-category-card.selected');
+            const counter = document.getElementById('test-counter');
+            const continueBtn = document.getElementById('test-continue-btn');
+            const count = selectedCards.length;
+            
+            selectedCategories = Array.from(selectedCards).map(card => 
+                card.querySelector('.test-category-name').textContent
+            );
+            
+            if (count === 0) {
+                counter.textContent = '0 Categories Selected';
+                continueBtn.classList.remove('show');
+                log('No categories selected - button hidden');
+            } else if (count === 1) {
+                counter.textContent = '1 Category Selected';
+                continueBtn.classList.add('show');
+                log('1 category selected - button shown');
+            } else {
+                counter.textContent = `${count} Categories Selected`;
+                continueBtn.classList.add('show');
+                log(`${count} categories selected - button shown`);
+            }
+            
+            log(`Selected categories: ${selectedCategories.join(', ')}`);
+        }
+        
+        function testContinue() {
+            log(`Continue button clicked! Selected categories: ${selectedCategories.join(', ')}`);
+            alert(`Continue with categories: ${selectedCategories.join(', ')}`);
+        }
+        
+        // Add click handlers to category cards
+        document.querySelectorAll('.test-category-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.classList.toggle('selected');
+                updateTestCounter();
+            });
+        });
+        
+        // Initialize
+        log('Test page loaded');
+        updateTestCounter();
+    </script>
+</body>
+</html>

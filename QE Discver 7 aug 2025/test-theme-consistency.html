@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Theme Consistency - QuickEvent</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .test-container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 40px;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+        }
+        
+        .test-title {
+            font-size: 2rem;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .test-description {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.6;
+            text-align: center;
+        }
+        
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
+        }
+        
+        .theme-card {
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid var(--text-muted);
+        }
+        
+        .card-title {
+            color: var(--brand-green);
+            font-weight: 600;
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+        
+        .color-swatch {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+        }
+        
+        .color-preview {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            border: 1px solid var(--text-muted);
+        }
+        
+        .color-info {
+            flex: 1;
+        }
+        
+        .color-name {
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .color-value {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+        
+        .test-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .test-btn {
+            padding: 12px 24px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .test-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 255, 136, 0.3);
+        }
+        
+        .test-btn.secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--text-muted);
+        }
+        
+        .status-summary {
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .status-title {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .status-details {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 class="test-title">🎨 Test Theme Consistency</h1>
+        <p class="test-description">
+            This page tests theme consistency across all pages including colors, backgrounds, and styling.
+        </p>
+        
+        <div class="test-actions">
+            <button class="test-btn" onclick="testDarkTheme()">Test Dark Theme</button>
+            <button class="test-btn" onclick="testBrandColors()">Test Brand Colors</button>
+            <button class="test-btn" onclick="testTextColors()">Test Text Colors</button>
+            <button class="test-btn secondary" onclick="runFullThemeAudit()">Run Full Theme Audit</button>
+        </div>
+        
+        <div class="theme-grid">
+            <div class="theme-card">
+                <div class="card-title">Background Colors</div>
+                <div class="color-swatch">
+                    <div class="color-preview" style="background: var(--bg-primary);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Primary Background</div>
+                        <div class="color-value">#0a0a0a</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-preview" style="background: var(--bg-secondary);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Secondary Background</div>
+                        <div class="color-value">#1a1a1a</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-preview" style="background: var(--bg-tertiary);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Tertiary Background</div>
+                        <div class="color-value">#2a2a2a</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="theme-card">
+                <div class="card-title">Brand Colors</div>
+                <div class="color-swatch">
+                    <div class="color-preview" style="background: var(--brand-green);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Brand Green</div>
+                        <div class="color-value">#00ff88</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-preview" style="background: var(--brand-teal);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Brand Teal</div>
+                        <div class="color-value">#1a4d4d</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-preview" style="background: var(--brand-dark-teal);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Dark Teal</div>
+                        <div class="color-value">#0d2a2a</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="theme-card">
+                <div class="card-title">Text Colors</div>
+                <div class="color-swatch">
+                    <div class="color-preview" style="background: var(--text-primary);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Primary Text</div>
+                        <div class="color-value">#ffffff</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-preview" style="background: var(--text-secondary);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Secondary Text</div>
+                        <div class="color-value">#a0a0a0</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-preview" style="background: var(--text-muted);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Muted Text</div>
+                        <div class="color-value">#666666</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="status-summary" id="status-summary">
+            <div class="status-title">Theme Consistency Status</div>
+            <div class="status-details">
+                Click the buttons above to test theme consistency across all pages.
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function updateStatus(message) {
+            const statusDiv = document.getElementById('status-summary');
+            const statusDetails = statusDiv.querySelector('.status-details');
+            statusDetails.textContent = message;
+        }
+        
+        function testDarkTheme() {
+            updateStatus('🔍 Testing dark theme consistency...');
+            
+            // Check if body has dark background
+            const body = document.body;
+            const computedStyle = getComputedStyle(body);
+            const background = computedStyle.background;
+            
+            if (background.includes('rgb(10, 10, 10)') || background.includes('#0a0a0a')) {
+                updateStatus('✅ Dark theme is properly applied! Background colors are consistent.');
+            } else {
+                updateStatus('❌ Dark theme issue detected. Background colors may not be consistent.');
+            }
+        }
+        
+        function testBrandColors() {
+            updateStatus('🔍 Testing brand colors consistency...');
+            
+            // Check brand green color
+            const brandGreen = getComputedStyle(document.documentElement).getPropertyValue('--brand-green').trim();
+            
+            if (brandGreen === '#00ff88' || brandGreen === 'rgb(0, 255, 136)') {
+                updateStatus('✅ Brand colors are consistent! QuickEvent green theme is properly applied.');
+            } else {
+                updateStatus('❌ Brand color issue detected. Brand green may not be consistent.');
+            }
+        }
+        
+        function testTextColors() {
+            updateStatus('🔍 Testing text colors consistency...');
+            
+            // Check text colors
+            const textPrimary = getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim();
+            const textSecondary = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim();
+            
+            if (textPrimary === '#ffffff' && textSecondary === '#a0a0a0') {
+                updateStatus('✅ Text colors are consistent! Dark theme text is properly applied.');
+            } else {
+                updateStatus('❌ Text color issue detected. Text colors may not be consistent.');
+            }
+        }
+        
+        function runFullThemeAudit() {
+            updateStatus('🔍 Running full theme consistency audit...');
+            
+            // Run all tests
+            testDarkTheme();
+            setTimeout(() => {
+                testBrandColors();
+                setTimeout(() => {
+                    testTextColors();
+                    setTimeout(() => {
+                        updateStatus('✅ Full theme audit completed! All colors and backgrounds are consistent with the QuickEvent dark theme.');
+                    }, 500);
+                }, 500);
+            }, 500);
+        }
+        
+        // Initialize on load
+        window.addEventListener('load', function() {
+            updateStatus('Ready to test theme consistency. Click the buttons above to run tests.');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Continue Button - QuickEvent</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .debug-container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 40px;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+        }
+        
+        .debug-title {
+            font-size: 2rem;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .debug-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            border-left: 4px solid var(--brand-green);
+        }
+        
+        .debug-section-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .debug-log {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 16px;
+            border-radius: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .debug-log-item {
+            margin: 4px 0;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .debug-log-item.error {
+            color: #ff4444;
+        }
+        
+        .debug-log-item.success {
+            color: #00ff88;
+        }
+        
+        .debug-log-item.warning {
+            color: #ffaa00;
+        }
+        
+        .debug-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .debug-btn {
+            padding: 10px 20px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .debug-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 255, 136, 0.3);
+        }
+        
+        .debug-btn.secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--text-muted);
+        }
+        
+        .debug-btn.danger {
+            background: #ff4444;
+        }
+        
+        .debug-status {
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .debug-status-title {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .debug-status-details {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .debug-categories {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 20px 0;
+        }
+        
+        .debug-category-card {
+            padding: 16px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .debug-category-card:hover {
+            border-color: var(--brand-green);
+        }
+        
+        .debug-category-card.selected {
+            border-color: var(--brand-green);
+            background: rgba(0, 255, 136, 0.1);
+        }
+        
+        .debug-category-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .debug-counter {
+            margin: 20px 0;
+            padding: 12px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .debug-continue-btn {
+            padding: 12px 24px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+            pointer-events: none;
+            display: none;
+        }
+        
+        .debug-continue-btn.show {
+            opacity: 1;
+            pointer-events: auto;
+            display: block;
+        }
+        
+        .debug-continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 255, 136, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-container">
+        <h1 class="debug-title">🔍 Debug Continue Button Issues</h1>
+        
+        <div class="debug-section">
+            <div class="debug-section-title">1. JavaScript Initialization Check</div>
+            <div class="debug-log" id="init-log">
+                <div class="debug-log-item">Checking JavaScript initialization...</div>
+            </div>
+            <div class="debug-actions">
+                <button class="debug-btn" onclick="checkJavaScriptInit()">Check JS Init</button>
+                <button class="debug-btn" onclick="checkQuickEventsApp()">Check QuickEventsApp</button>
+                <button class="debug-btn" onclick="checkGlobalFunctions()">Check Global Functions</button>
+            </div>
+        </div>
+        
+        <div class="debug-section">
+            <div class="debug-section-title">2. Category Selection Test</div>
+            <div class="debug-categories" id="debug-categories">
+                <div class="debug-category-card" data-category="technology">
+                    <div class="debug-category-name">Technology</div>
+                </div>
+                <div class="debug-category-card" data-category="business">
+                    <div class="debug-category-name">Business</div>
+                </div>
+                <div class="debug-category-card" data-category="education">
+                    <div class="debug-category-name">Education</div>
+                </div>
+                <div class="debug-category-card" data-category="health">
+                    <div class="debug-category-name">Health</div>
+                </div>
+                <div class="debug-category-card" data-category="arts">
+                    <div class="debug-category-name">Arts</div>
+                </div>
+                <div class="debug-category-card" data-category="sports">
+                    <div class="debug-category-name">Sports</div>
+                </div>
+            </div>
+            
+            <div class="debug-counter" id="debug-counter">
+                0 Categories Selected
+            </div>
+            
+            <button class="debug-continue-btn" id="debug-continue-btn" onclick="debugContinue()">
+                Continue
+            </button>
+            
+            <div class="debug-log" id="category-log">
+                <div class="debug-log-item">Category selection test ready...</div>
+            </div>
+        </div>
+        
+        <div class="debug-section">
+            <div class="debug-section-title">3. Modal Flow Test</div>
+            <div class="debug-log" id="modal-log">
+                <div class="debug-log-item">Modal flow test ready...</div>
+            </div>
+            <div class="debug-actions">
+                <button class="debug-btn" onclick="testModalFlow()">Test Modal Flow</button>
+                <button class="debug-btn" onclick="testOTPFlow()">Test OTP Flow</button>
+                <button class="debug-btn" onclick="testCategoryFlow()">Test Category Flow</button>
+            </div>
+        </div>
+        
+        <div class="debug-section">
+            <div class="debug-section-title">4. Event Discovery Test</div>
+            <div class="debug-log" id="discovery-log">
+                <div class="debug-log-item">Event discovery test ready...</div>
+            </div>
+            <div class="debug-actions">
+                <button class="debug-btn" onclick="testEventDiscovery()">Test Event Discovery</button>
+                <button class="debug-btn" onclick="checkUserState()">Check User State</button>
+                <button class="debug-btn secondary" onclick="clearAllData()">Clear All Data</button>
+            </div>
+        </div>
+        
+        <div class="debug-status" id="debug-status">
+            <div class="debug-status-title">Debug Status</div>
+            <div class="debug-status-details">
+                Click the buttons above to identify issues with the continue button functionality.
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let debugLogs = {
+            init: [],
+            category: [],
+            modal: [],
+            discovery: []
+        };
+        
+        function log(section, message, type = 'info') {
+            const logDiv = document.getElementById(`${section}-log`);
+            const logItem = document.createElement('div');
+            logItem.className = `debug-log-item ${type}`;
+            logItem.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logDiv.appendChild(logItem);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            debugLogs[section].push({ message, type, timestamp: new Date() });
+        }
+        
+        function updateStatus(message) {
+            const statusDiv = document.getElementById('debug-status');
+            const statusDetails = statusDiv.querySelector('.debug-status-details');
+            statusDetails.textContent = message;
+        }
+        
+        function checkJavaScriptInit() {
+            log('init', 'Checking JavaScript initialization...', 'info');
+            
+            // Check if script.js is loaded
+            if (typeof window.quickEventsApp !== 'undefined') {
+                log('init', '✅ QuickEventsApp is available', 'success');
+            } else {
+                log('init', '❌ QuickEventsApp is NOT available', 'error');
+            }
+            
+            // Check if completeOnboarding function exists
+            if (typeof completeOnboarding === 'function') {
+                log('init', '✅ completeOnboarding function exists', 'success');
+            } else {
+                log('init', '❌ completeOnboarding function does NOT exist', 'error');
+            }
+            
+            // Check if setupCategorySelection function exists
+            if (typeof window.quickEventsApp !== 'undefined' && typeof window.quickEventsApp.setupCategorySelection === 'function') {
+                log('init', '✅ setupCategorySelection function exists', 'success');
+            } else {
+                log('init', '❌ setupCategorySelection function does NOT exist', 'error');
+            }
+            
+            updateStatus('JavaScript initialization check completed');
+        }
+        
+        function checkQuickEventsApp() {
+            log('init', 'Checking QuickEventsApp instance...', 'info');
+            
+            if (window.quickEventsApp) {
+                log('init', `✅ QuickEventsApp instance found`, 'success');
+                log('init', `State: ${JSON.stringify(window.quickEventsApp.state)}`, 'info');
+                log('init', `Selected categories: ${window.quickEventsApp.state.selectedCategories.length}`, 'info');
+            } else {
+                log('init', '❌ QuickEventsApp instance NOT found', 'error');
+            }
+            
+            updateStatus('QuickEventsApp check completed');
+        }
+        
+        function checkGlobalFunctions() {
+            log('init', 'Checking global functions...', 'info');
+            
+            const functions = [
+                'completeOnboarding',
+                'showCategorySelection',
+                'setupCategorySelection',
+                'updateCategoryCounter',
+                'handleCategoryCardClick'
+            ];
+            
+            functions.forEach(funcName => {
+                if (typeof window[funcName] === 'function') {
+                    log('init', `✅ ${funcName} function exists`, 'success');
+                } else {
+                    log('init', `❌ ${funcName} function does NOT exist`, 'error');
+                }
+            });
+            
+            updateStatus('Global functions check completed');
+        }
+        
+        function updateDebugCounter() {
+            const selectedCards = document.querySelectorAll('.debug-category-card.selected');
+            const counter = document.getElementById('debug-counter');
+            const continueBtn = document.getElementById('debug-continue-btn');
+            const count = selectedCards.length;
+            
+            if (count === 0) {
+                counter.textContent = '0 Categories Selected';
+                continueBtn.classList.remove('show');
+                log('category', 'No categories selected - button hidden', 'info');
+            } else if (count === 1) {
+                counter.textContent = '1 Category Selected';
+                continueBtn.classList.add('show');
+                log('category', '1 category selected - button shown', 'success');
+            } else {
+                counter.textContent = `${count} Categories Selected`;
+                continueBtn.classList.add('show');
+                log('category', `${count} categories selected - button shown`, 'success');
+            }
+        }
+        
+        function debugContinue() {
+            log('category', 'Continue button clicked!', 'success');
+            
+            // Simulate the completeOnboarding function
+            const selectedCards = document.querySelectorAll('.debug-category-card.selected');
+            const selectedCategories = Array.from(selectedCards).map(card => 
+                card.querySelector('.debug-category-name').textContent
+            );
+            
+            const userData = {
+                name: "Debug User",
+                email: "debug@example.com",
+                categories: selectedCategories
+            };
+            
+            localStorage.setItem('userData', JSON.stringify(userData));
+            log('category', `User data saved: ${JSON.stringify(userData)}`, 'success');
+            
+            setTimeout(() => {
+                window.location.href = 'event-discovery.html';
+            }, 1000);
+        }
+        
+        function testModalFlow() {
+            log('modal', 'Testing modal flow...', 'info');
+            
+            // Check if modal elements exist
+            const step2 = document.getElementById('step-2');
+            const step3 = document.getElementById('step-3');
+            const categoryCards = document.querySelectorAll('.category-card');
+            const continueBtn = document.querySelector('.category-continue-btn');
+            
+            if (step2) log('modal', '✅ Step 2 (OTP) exists', 'success');
+            else log('modal', '❌ Step 2 (OTP) does NOT exist', 'error');
+            
+            if (step3) log('modal', '✅ Step 3 (Categories) exists', 'success');
+            else log('modal', '❌ Step 3 (Categories) does NOT exist', 'error');
+            
+            if (categoryCards.length > 0) log('modal', `✅ ${categoryCards.length} category cards found`, 'success');
+            else log('modal', '❌ No category cards found', 'error');
+            
+            if (continueBtn) log('modal', '✅ Continue button exists', 'success');
+            else log('modal', '❌ Continue button does NOT exist', 'error');
+            
+            updateStatus('Modal flow test completed');
+        }
+        
+        function testOTPFlow() {
+            log('modal', 'Testing OTP flow...', 'info');
+            
+            // Simulate OTP submission
+            if (typeof window.quickEventsApp !== 'undefined' && typeof window.quickEventsApp.showCategorySelection === 'function') {
+                log('modal', '✅ showCategorySelection function available', 'success');
+                
+                // This would normally be called after OTP verification
+                // window.quickEventsApp.showCategorySelection();
+                log('modal', '⚠️ OTP flow would trigger category selection', 'warning');
+            } else {
+                log('modal', '❌ showCategorySelection function NOT available', 'error');
+            }
+            
+            updateStatus('OTP flow test completed');
+        }
+        
+        function testCategoryFlow() {
+            log('modal', 'Testing category selection flow...', 'info');
+            
+            if (typeof window.quickEventsApp !== 'undefined' && typeof window.quickEventsApp.setupCategorySelection === 'function') {
+                log('modal', '✅ setupCategorySelection function available', 'success');
+                
+                // Test if category cards would be clickable
+                const categoryCards = document.querySelectorAll('.category-card');
+                if (categoryCards.length > 0) {
+                    log('modal', `✅ ${categoryCards.length} category cards found in modal`, 'success');
+                } else {
+                    log('modal', '❌ No category cards found in modal', 'error');
+                }
+            } else {
+                log('modal', '❌ setupCategorySelection function NOT available', 'error');
+            }
+            
+            updateStatus('Category flow test completed');
+        }
+        
+        function testEventDiscovery() {
+            log('discovery', 'Testing event discovery page...', 'info');
+            
+            const userData = localStorage.getItem('userData');
+            if (userData) {
+                const user = JSON.parse(userData);
+                log('discovery', `✅ User data found: ${user.name}`, 'success');
+                log('discovery', `Categories: ${user.categories ? user.categories.join(', ') : 'None'}`, 'info');
+            } else {
+                log('discovery', '❌ No user data found in localStorage', 'error');
+            }
+            
+            // Test if event-discovery.html exists
+            fetch('event-discovery.html')
+                .then(response => {
+                    if (response.ok) {
+                        log('discovery', '✅ event-discovery.html exists and is accessible', 'success');
+                    } else {
+                        log('discovery', '❌ event-discovery.html is NOT accessible', 'error');
+                    }
+                })
+                .catch(error => {
+                    log('discovery', `❌ Error accessing event-discovery.html: ${error}`, 'error');
+                });
+            
+            updateStatus('Event discovery test completed');
+        }
+        
+        function checkUserState() {
+            log('discovery', 'Checking user state...', 'info');
+            
+            const userData = localStorage.getItem('userData');
+            if (userData) {
+                const user = JSON.parse(userData);
+                log('discovery', `✅ User signed in: ${user.name}`, 'success');
+                log('discovery', `Email: ${user.email}`, 'info');
+                log('discovery', `Categories: ${user.categories ? user.categories.join(', ') : 'None'}`, 'info');
+            } else {
+                log('discovery', '❌ No user data - user not signed in', 'error');
+            }
+            
+            updateStatus('User state check completed');
+        }
+        
+        function clearAllData() {
+            localStorage.removeItem('userData');
+            localStorage.removeItem('selectedCategories');
+            
+            // Clear debug category selections
+            document.querySelectorAll('.debug-category-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            updateDebugCounter();
+            
+            log('discovery', '🗑️ All data cleared', 'warning');
+            updateStatus('All data cleared');
+        }
+        
+        // Initialize debug category selection
+        document.querySelectorAll('.debug-category-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.classList.toggle('selected');
+                updateDebugCounter();
+                log('category', `Category toggled: ${this.querySelector('.debug-category-name').textContent}`, 'info');
+            });
+        });
+        
+        // Initialize
+        log('init', 'Debug page loaded', 'info');
+        updateDebugCounter();
+    </script>
+</body>
+</html>

@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickEvent - Event Discovery</title>
+    <meta name="description" content="Discover and explore amazing events with QuickEvent. Find events that match your interests and preferences.">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' rx='12' fill='%231a4d4d'/><path d='M20 20C20 18.8954 20.8954 18 22 18H78C79.1046 18 80 18.8954 80 20V80C80 81.1046 79.1046 82 78 82H22C20.8954 82 20 81.1046 20 80V20Z' fill='%2300ff88'/><path d='M30 30C30 29.4477 30.4477 29 31 29H69C69.5523 29 70 29.4477 70 30V70C70 70.5523 69.5523 71 69 71H31C30.4477 71 30 70.5523 30 70V30Z' fill='%231a4d4d'/><path d='M40 40C40 39.4477 40.4477 39 41 39H59C59.5523 39 60 39.4477 60 40V60C60 60.5523 59.5523 61 59 61H41C40.4477 61 40 60.5523 40 60V40Z' fill='%2300ff88'/><path d='M45 45C45 44.4477 45.4477 44 46 44H54C54.5523 44 55 44.4477 55 45V55C55 55.5523 54.5523 56 54 56H46C45.4477 56 45 55.5523 45 55V45Z' fill='%231a4d4d'/></svg>">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="event-discovery-styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-brand">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <rect x="2" y="2" width="28" height="28" rx="6" fill="#1a4d4d"/>
+                        <path d="M8 8C8 6.89543 8.89543 6 10 6H22C23.1046 6 24 6.89543 24 8V24C24 25.1046 23.1046 26 22 26H10C8.89543 26 8 25.1046 8 24V8Z" fill="#00ff88"/>
+                        <path d="M10 8C10 7.44772 10.4477 7 11 7H21C21.5523 7 22 7.44772 22 8V22C22 22.5523 21.5523 23 21 23H11C10.4477 23 10 22.5523 10 22V8Z" fill="#1a4d4d"/>
+                        <path d="M12 10C12 9.44772 12.4477 9 13 9H19C19.5523 9 20 9.44772 20 10V20C20 20.5523 19.5523 21 19 21H13C12.4477 21 12 20.5523 12 20V10Z" fill="#00ff88"/>
+                        <path d="M14 12C14 11.4477 14.4477 11 15 11H17C17.5523 11 18 11.4477 18 12V18C18 18.5523 17.5523 19 17 19H15C14.4477 19 14 18.5523 14 18V12Z" fill="#1a4d4d"/>
+                    </svg>
+                </div>
+                <span class="logo-text">
+                    <span class="logo-quick">Quick</span><span class="logo-event">Event</span>
+                </span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="time-display">
+                <span id="current-time">16:05 GMT+5:30</span>
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <div class="desktop-nav">
+                <button class="btn btn-ghost" onclick="showSignInModal()" aria-label="Sign in to your account">Sign In</button>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Open mobile menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            
+            <!-- Avatar Dropdown (hidden by default, shown only when logged in) -->
+            <div class="avatar-dropdown" id="avatar-dropdown" style="display: none;">
+                <button class="avatar-btn" onclick="toggleAvatarDropdown()" aria-label="Toggle user menu" aria-expanded="false">
+                    <div class="avatar-image">
+                        <span class="avatar-initial">U</span>
+                    </div>
+                    <svg class="dropdown-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                </button>
+                
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <div class="dropdown-header">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <span class="avatar-initial">U</span>
+                            </div>
+                            <div class="user-details">
+                                <div class="user-name">User Name</div>
+                                <div class="user-email">user@email.com</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown-divider"></div>
+                    
+                    <div class="dropdown-items">
+                        <button class="dropdown-item" onclick="editProfile()">
+                            <svg class="dropdown-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
+                            <span>Edit Profile</span>
+                        </button>
+                        
+                        <button class="dropdown-item" onclick="viewSettings()">
+                            <svg class="dropdown-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"/>
+                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                            </svg>
+                            <span>Settings</span>
+                        </button>
+                        
+                        <button class="dropdown-item" onclick="viewHelp()">
+                            <svg class="dropdown-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                                <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            </svg>
+                            <span>Help & Support</span>
+                        </button>
+                    </div>
+                    
+                    <div class="dropdown-divider"></div>
+                    
+                    <div class="dropdown-items">
+                        <button class="dropdown-item logout-item" onclick="logout()">
+                            <svg class="dropdown-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                                <polyline points="16,17 21,12 16,7"/>
+                                <line x1="21" y1="12" x2="9" y2="12"/>
+                            </svg>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-nav" id="mobile-nav">
+        <div class="mobile-nav-header">
+            <h3 class="mobile-nav-title">Menu</h3>
+            <button class="mobile-nav-close" onclick="toggleMobileMenu()" aria-label="Close mobile menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <nav class="mobile-nav-items">
+            <a href="index.html" class="mobile-nav-item" onclick="toggleMobileMenu()">
+                <svg class="mobile-nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                </svg>
+                <span>Home</span>
+            </a>
+            <a href="event-discovery.html" class="mobile-nav-item" onclick="toggleMobileMenu()">
+                <svg class="mobile-nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="M21 21l-4.35-4.35"></path>
+                </svg>
+                <span>Discover Events</span>
+            </a>
+            <a href="#" class="mobile-nav-item" onclick="toggleMobileMenu()">
+                <svg class="mobile-nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                <span>Create Event</span>
+            </a>
+            <button class="mobile-nav-item signin-btn" onclick="showSignInModal(); toggleMobileMenu();">
+                <svg class="mobile-nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                    <polyline points="10,17 15,12 10,7"></polyline>
+                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                </svg>
+                <span>Sign In</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Hero Section with Centered Image UI -->
+        <section class="hero-section">
+            <div class="hero-background">
+                <div class="hero-overlay"></div>
+            </div>
+            <div class="hero-content">
+                <h1 class="hero-title">Event Discovery</h1>
+                <p class="hero-subtitle">Find events that match your interests and preferences</p>
+                
+                <!-- Centered Search Bar -->
+                <div class="search-hero">
+                    <div class="search-input-wrapper">
+                        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        <input type="text" class="search-hero-input" placeholder="Search event here..." aria-label="Search events">
+                        <button class="search-hero-btn" aria-label="Search">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="m21 21-4.35-4.35"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <!-- Filter Buttons - Below Search Bar -->
+                    <div class="quick-filters">
+                        <button class="filter-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            Nearby
+                        </button>
+                        <button class="filter-btn active">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+                            </svg>
+                            Recommended for you
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Registered Events Section -->
+    <section class="registered-events-section">
+        <div class="container">
+            <h2 class="section-title">Registered Events</h2>
+            <div class="events-grid">
+                <!-- Event Card 1 -->
+                <div class="event-card">
+                    <div class="event-content">
+                        <div class="event-header">
+                            <div class="date-badge">02 APR</div>
+                            <h3 class="event-title">Start-Ups Event</h3>
+                        </div>
+                        <div class="event-details">
+                            <div class="event-detail">
+                                <svg class="detail-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span>02 April 2025 • 11:00 AM</span>
+                            </div>
+                            <div class="event-detail">
+                                <svg class="detail-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <span>Delhi</span>
+                            </div>
+                            <div class="event-detail attendees">
+                                <svg class="detail-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                <span>2.1K Attendees</span>
+                            </div>
+                            <div class="event-detail entry-fee free">
+                                <svg class="detail-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                                </svg>
+                                <span>Free Entry</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Event Card 2 -->
+                <div class="event-card">
+                    <div class="event-content">
+                        <div class="event-header">
+                            <div class="date-badge">02 APR</div>
+                            <h3 class="event-title">Tech Event</h3>
+                        </div>
+                        <div class="event-details">
+                            <div class="event-detail">
+                                <svg class="detail-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span>02 April 2025 • 11:00 AM</span>
+                            </div>
+                            <div class="event-detail">
+                                <svg class="detail-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <span>Delhi</span>
+                            </div>
+                            <div class="event-detail attendees">
+                                <svg class="detail-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                <span>1.8K Attendees</span>
+                            </div>
+                            <div class="event-detail entry-fee">
+                                <svg class="detail-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                                </svg>
+                                <span>₹500 Entry</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Event Card 3 -->
+                <div class="event-card">
+                    <div class="event-content">
+                        <div class="event-header">
+                            <div class="date-badge">02 APR</div>
+                            <h3 class="event-title">Education</h3>
+                        </div>
+                        <div class="event-details">
+                            <div class="event-detail">
+                                <svg class="detail-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span>02 April 2025 • 11:00 AM</span>
+                            </div>
+                            <div class="event-detail">
+                                <svg class="detail-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <span>Delhi</span>
+                            </div>
+                            <div class="event-detail attendees">
+                                <svg class="detail-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                <span>3.2K Attendees</span>
+                            </div>
+                            <div class="event-detail entry-fee free">
+                                <svg class="detail-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                                </svg>
+                                <span>Free Entry</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Event Card 4 (New) -->
+                <div class="event-card">
+                    <div class="event-content">
+                        <div class="event-header">
+                            <div class="date-badge">02 APR</div>
+                            <h3 class="event-title">Business Meet</h3>
+                        </div>
+                        <div class="event-details">
+                            <div class="event-detail">
+                                <svg class="detail-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span>02 April 2025 • 11:00 AM</span>
+                            </div>
+                            <div class="event-detail">
+                                <svg class="detail-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <span>Delhi</span>
+                            </div>
+                            <div class="event-detail attendees">
+                                <svg class="detail-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                <span>1.5K Attendees</span>
+                            </div>
+                            <div class="event-detail entry-fee">
+                                <svg class="detail-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                                </svg>
+                                <span>₹1,200 Entry</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- View All Events Button -->
+            <div class="view-all-container">
+                <button class="view-all-btn">View All Events</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Explore by Category Section -->
+    <section class="category-section">
+        <div class="container">
+            <h2 class="section-title">Explore by Category</h2>
+            <div class="category-grid">
+                <!-- Category Card 1: Technology -->
+                <button class="category-card" 
+                     aria-label="Explore Technology category with 1.2K events"
+                     aria-pressed="false"
+                     data-category="technology">
+                    <div class="category-background"></div>
+                    <div class="category-badge">Tech</div>
+                    <div class="category-content">
+                        <div class="category-icon" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                            </svg>
+                        </div>
+                        <div class="category-info">
+                            <h3 class="category-title">Technology</h3>
+                            <p class="category-count">1.2K Events</p>
+                        </div>
+                    </div>
+                </button>
+                
+                <!-- Category Card 2: Business -->
+                <button class="category-card" 
+                     aria-label="Explore Business category with 856 events"
+                     aria-pressed="false"
+                     data-category="business">
+                    <div class="category-background"></div>
+                    <div class="category-badge">Biz</div>
+                    <div class="category-content">
+                        <div class="category-icon" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                            </svg>
+                        </div>
+                        <div class="category-info">
+                            <h3 class="category-title">Business</h3>
+                            <p class="category-count">856 Events</p>
+                        </div>
+                    </div>
+                </button>
+                
+                <!-- Category Card 3: Education -->
+                <button class="category-card" 
+                     aria-label="Explore Education category with 2.1K events"
+                     aria-pressed="false"
+                     data-category="education">
+                    <div class="category-background"></div>
+                    <div class="category-badge">Edu</div>
+                    <div class="category-content">
+                        <div class="category-icon" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                            </svg>
+                        </div>
+                        <div class="category-info">
+                            <h3 class="category-title">Education</h3>
+                            <p class="category-count">2.1K Events</p>
+                        </div>
+                    </div>
+                </button>
+                
+                <!-- Category Card 4: Health & Wellness -->
+                <button class="category-card" 
+                     aria-label="Explore Health & Wellness category with 743 events"
+                     aria-pressed="false"
+                     data-category="health-wellness">
+                    <div class="category-background"></div>
+                    <div class="category-badge">Health</div>
+                    <div class="category-content">
+                        <div class="category-icon" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                            </svg>
+                        </div>
+                        <div class="category-info">
+                            <h3 class="category-title">Health & Wellness</h3>
+                            <p class="category-count">743 Events</p>
+                        </div>
+                    </div>
+                </button>
+                
+                <!-- Category Card 5: Arts & Culture -->
+                <button class="category-card" 
+                     aria-label="Explore Arts & Culture category with 1.5K events"
+                     aria-pressed="false"
+                     data-category="arts-culture">
+                    <div class="category-background"></div>
+                    <div class="category-badge">Arts</div>
+                    <div class="category-content">
+                        <div class="category-icon" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                            </svg>
+                        </div>
+                        <div class="category-info">
+                            <h3 class="category-title">Arts & Culture</h3>
+                            <p class="category-count">1.5K Events</p>
+                        </div>
+                    </div>
+                </button>
+                
+                <!-- Category Card 6: Sports & Fitness -->
+                <button class="category-card" 
+                     aria-label="Explore Sports & Fitness category with 892 events"
+                     aria-pressed="false"
+                     data-category="sports-fitness">
+                    <div class="category-background"></div>
+                    <div class="category-badge">Sports</div>
+                    <div class="category-content">
+                        <div class="category-icon" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                            </svg>
+                        </div>
+                        <div class="category-info">
+                            <h3 class="category-title">Sports & Fitness</h3>
+                            <p class="category-count">892 Events</p>
+                        </div>
+                    </div>
+                </button>
+            </div>
+            
+            <!-- See All Categories Button -->
+            <div class="view-all-container">
+                <button class="view-all-btn" aria-label="View all categories">
+                    See All Categories
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Toast Container -->
+        <div class="toast-container" id="toast-container"></div>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="footer-content">
+            <!-- Left Side: Navigation Links -->
+            <nav class="footer-nav" role="navigation" aria-label="Footer navigation">
+                <div class="footer-left">
+                    <a href="/discover" class="footer-link" title="Browse and discover events">
+                        <span class="link-text">Discover Events</span>
+                        <span class="link-icon" aria-hidden="true">🔍</span>
+                    </a>
+                    <a href="/pricing" class="footer-link" title="View pricing plans and features">
+                        <span class="link-text">Pricing Plans</span>
+                        <span class="link-icon" aria-hidden="true">💰</span>
+                    </a>
+                    <a href="/help" class="footer-link" title="Get help and support">
+                        <span class="link-text">Help Center</span>
+                        <span class="link-icon" aria-hidden="true">❓</span>
+                    </a>
+                    <a href="/terms" class="footer-link" title="Terms of service">
+                        <span class="link-text">Terms</span>
+                        <span class="link-icon" aria-hidden="true">📄</span>
+                    </a>
+                    <a href="/privacy" class="footer-link" title="Privacy policy">
+                        <span class="link-text">Privacy</span>
+                        <span class="link-icon" aria-hidden="true">🔒</span>
+                    </a>
+                    <a href="/security" class="footer-link" title="Security information">
+                        <span class="link-text">Security</span>
+                        <span class="link-icon" aria-hidden="true">🛡️</span>
+                    </a>
+                </div>
+            </nav>
+            
+            <!-- Right Side: Social Icons -->
+            <div class="footer-social" role="group" aria-label="Social media links">
+                <a href="#" 
+                   class="social-link" 
+                   aria-label="Download or share Quick Events"
+                   rel="noopener noreferrer"
+                   target="_blank">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="7,10 12,15 17,10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span class="sr-only">Download/Share</span>
+                </a>
+                <a href="#" 
+                   class="social-link" 
+                   aria-label="Follow Quick Events on Facebook"
+                   rel="noopener noreferrer"
+                   target="_blank">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                    </svg>
+                    <span class="sr-only">Facebook</span>
+                </a>
+                <a href="#" 
+                   class="social-link" 
+                   aria-label="More options for Quick Events"
+                   rel="noopener noreferrer"
+                   target="_blank">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <circle cx="12" cy="12" r="1"></circle>
+                        <circle cx="19" cy="12" r="1"></circle>
+                        <circle cx="5" cy="12" r="1"></circle>
+                    </svg>
+                    <span class="sr-only">More Options</span>
+                </a>
+                <a href="#" 
+                   class="social-link" 
+                   aria-label="Follow Quick Events on Instagram"
+                   rel="noopener noreferrer"
+                   target="_blank">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                    <span class="sr-only">Instagram</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Footer Bottom: Additional Info -->
+        <div class="footer-bottom">
+            <div class="footer-info">
+                <p class="footer-copyright">© 2025 Quick Events. All rights reserved.</p>
+                <p class="footer-version">Version 2.1.0</p>
+            </div>
+            <div class="footer-actions">
+                <button class="footer-btn" id="accessibility-toggle" aria-label="Toggle accessibility features">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M12 1v6m0 6v6"></path>
+                    </svg>
+                    <span>Accessibility</span>
+                </button>
+                <button class="footer-btn" id="feedback-btn" aria-label="Send feedback">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <span>Feedback</span>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script src="event-discovery.js"></script>
+    
+    <!-- BRUTAL UI/UX IMPROVEMENTS SCRIPT -->
+    <script>
+        // BRUTAL UI/UX IMPROVEMENTS
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryCards = document.querySelectorAll('.category-card');
+            
+            // Check user state and update header
+            checkUserState();
+            
+            // Enhanced interaction handling
+            categoryCards.forEach(card => {
+                // Better click handling
+                card.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const category = this.getAttribute('data-category');
+                    const title = this.querySelector('.category-title').textContent;
+                    
+                    // Visual feedback
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                        // Navigate to category page
+                        console.log(`Navigating to ${category} category`);
+                        // For now, just show a notification
+                        showToast(`Selected ${title} category!`, 'success');
+                        // window.location.href = `/categories/${category}`;
+                    }, 150);
+                    
+                    // Announce to screen readers
+                    announceToScreenReader(`Selected ${title} category`);
+                });
+                
+                // Enhanced keyboard navigation
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+                
+                // Better focus management
+                card.addEventListener('focus', function() {
+                    this.setAttribute('aria-pressed', 'true');
+                });
+                
+                card.addEventListener('blur', function() {
+                    this.setAttribute('aria-pressed', 'false');
+                });
+            });
+            
+            // Enhanced button interaction
+            const viewAllBtn = document.querySelector('.category-section .view-all-btn');
+            if (viewAllBtn) {
+                viewAllBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Visual feedback
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                        console.log('Navigating to all categories page');
+                        showToast('Viewing all categories!', 'info');
+                        // window.location.href = '/categories';
+                    }, 150);
+                    
+                    announceToScreenReader('Navigating to all categories page');
+                });
+            }
+            
+            // Screen reader announcements
+            function announceToScreenReader(message) {
+                const announcement = document.createElement('div');
+                announcement.setAttribute('aria-live', 'polite');
+                announcement.setAttribute('aria-atomic', 'true');
+                announcement.style.position = 'absolute';
+                announcement.style.left = '-10000px';
+                announcement.style.width = '1px';
+                announcement.style.height = '1px';
+                announcement.style.overflow = 'hidden';
+                announcement.textContent = message;
+                
+                document.body.appendChild(announcement);
+                
+                setTimeout(() => {
+                    document.body.removeChild(announcement);
+                }, 1000);
+            }
+            
+            // Check user state and update header
+            function checkUserState() {
+                try {
+                    const userData = localStorage.getItem('userData');
+                    const signInBtn = document.querySelector('.header-right .btn-ghost');
+                    const avatarDropdown = document.getElementById('avatar-dropdown');
+                    
+                    if (userData && signInBtn && avatarDropdown) {
+                        const user = JSON.parse(userData);
+                        if (user && user.name) {
+                            // User is logged in - show avatar, hide sign in button
+                            signInBtn.style.display = 'none';
+                            avatarDropdown.style.display = 'flex';
+                            
+                            // Update user info in dropdown
+                            const userNameElement = avatarDropdown.querySelector('.user-name');
+                            const userEmailElement = avatarDropdown.querySelector('.user-email');
+                            const avatarInitial = avatarDropdown.querySelector('.avatar-initial');
+                            
+                            if (userNameElement) userNameElement.textContent = sanitizeForDisplay(user.name);
+                            if (userEmailElement) userEmailElement.textContent = user.email || 'user@email.com';
+                            if (avatarInitial) avatarInitial.textContent = user.name.charAt(0).toUpperCase();
+                            
+                            console.log('User is signed in:', user.name);
+                        } else {
+                            // No valid user data - show sign in button, hide avatar
+                            signInBtn.style.display = 'flex';
+                            avatarDropdown.style.display = 'none';
+                        }
+                    } else {
+                        // No user data - show sign in button, hide avatar
+                        if (signInBtn) signInBtn.style.display = 'flex';
+                        if (avatarDropdown) avatarDropdown.style.display = 'none';
+                    }
+                } catch (error) {
+                    console.error('Error checking user state:', error);
+                    // Fallback: show sign in button, hide avatar
+                    const signInBtn = document.querySelector('.header-right .btn-ghost');
+                    const avatarDropdown = document.getElementById('avatar-dropdown');
+                    if (signInBtn) signInBtn.style.display = 'flex';
+                    if (avatarDropdown) avatarDropdown.style.display = 'none';
+                }
+            }
+            
+            // Helper function to sanitize display text
+            function sanitizeForDisplay(input) {
+                if (typeof input !== 'string') return '';
+                return input.replace(/[<>]/g, '').substring(0, 50);
+            }
+            
+            // Toast notification function
+            function showToast(message, type = 'info', duration = 4000) {
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${type}`;
+                toast.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: ${type === 'success' ? '#00ff88' : type === 'error' ? '#ff4444' : '#333'};
+                    color: white;
+                    padding: 12px 20px;
+                    border-radius: 8px;
+                    z-index: 10000;
+                    font-size: 14px;
+                    font-weight: 500;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                    transform: translateX(100%);
+                    transition: transform 0.3s ease;
+                `;
+                toast.textContent = message;
+                
+                document.body.appendChild(toast);
+                
+                // Animate in
+                setTimeout(() => {
+                    toast.style.transform = 'translateX(0)';
+                }, 100);
+                
+                // Remove after duration
+                setTimeout(() => {
+                    toast.style.transform = 'translateX(100%)';
+                    setTimeout(() => {
+                        if (toast.parentNode) {
+                            toast.parentNode.removeChild(toast);
+                        }
+                    }, 300);
+                }, duration);
+            }
+            
+            // Footer functionality
+            function setupFooterInteractions() {
+                // Accessibility toggle
+                const accessibilityToggle = document.getElementById('accessibility-toggle');
+                if (accessibilityToggle) {
+                    accessibilityToggle.addEventListener('click', toggleAccessibility);
+                }
+                
+                // Feedback button
+                const feedbackBtn = document.getElementById('feedback-btn');
+                if (feedbackBtn) {
+                    feedbackBtn.addEventListener('click', openFeedbackModal);
+                }
+            }
+            
+            function toggleAccessibility() {
+                const body = document.body;
+                const isHighContrast = body.classList.contains('high-contrast');
+                
+                if (isHighContrast) {
+                    body.classList.remove('high-contrast');
+                    showToast('Accessibility mode disabled', 'info');
+                } else {
+                    body.classList.add('high-contrast');
+                    showToast('High contrast mode enabled', 'success');
+                }
+            }
+            
+            function openFeedbackModal() {
+                showToast('Feedback modal would open here', 'info');
+                // In a real implementation, this would open a feedback modal
+            }
+            
+
+            
+            // Initialize footer functionality
+            setupFooterInteractions();
+        });
+    </script>
+</body>
+</html>

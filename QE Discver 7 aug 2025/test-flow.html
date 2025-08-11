@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Flow - QuickEvent</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .test-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 40px;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            text-align: center;
+        }
+        
+        .test-title {
+            font-size: 2rem;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+        
+        .test-description {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .test-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .test-btn {
+            padding: 12px 24px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .test-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 255, 136, 0.3);
+        }
+        
+        .user-info {
+            background: rgba(0, 255, 136, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+        
+        .user-info h3 {
+            color: var(--brand-green);
+            margin-bottom: 10px;
+        }
+        
+        .user-info p {
+            color: var(--text-secondary);
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 class="test-title">Test Category Selection Flow</h1>
+        <p class="test-description">
+            This page tests the category selection and redirect flow. 
+            Click the buttons below to simulate different scenarios.
+        </p>
+        
+        <div class="test-buttons">
+            <button class="test-btn" onclick="simulateSignIn()">1. Simulate Sign In</button>
+            <button class="test-btn" onclick="simulateCategorySelection()">2. Simulate Category Selection</button>
+            <button class="test-btn" onclick="redirectToDiscovery()">3. Go to Event Discovery</button>
+            <button class="test-btn" onclick="clearUserData()">4. Clear User Data</button>
+        </div>
+        
+        <div id="user-info" class="user-info" style="display: none;">
+            <h3>Current User Data</h3>
+            <div id="user-details"></div>
+        </div>
+        
+        <div style="margin-top: 30px;">
+            <h3 style="color: var(--text-primary);">Instructions:</h3>
+            <ol style="text-align: left; color: var(--text-secondary); line-height: 1.8;">
+                <li>Click "Simulate Sign In" to create test user data</li>
+                <li>Click "Simulate Category Selection" to add selected categories</li>
+                <li>Click "Go to Event Discovery" to redirect to the discovery page</li>
+                <li>On the discovery page, you should see the avatar icon and user info</li>
+                <li>Click "Clear User Data" to reset and test the flow again</li>
+            </ol>
+        </div>
+    </div>
+    
+    <script>
+        function simulateSignIn() {
+            const userData = {
+                name: "John Doe",
+                email: "john.doe@example.com",
+                categories: []
+            };
+            localStorage.setItem('userData', JSON.stringify(userData));
+            showToast('✅ User signed in successfully!', 'success');
+            updateUserInfo();
+        }
+        
+        function simulateCategorySelection() {
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            userData.categories = ['technology', 'business', 'education'];
+            localStorage.setItem('userData', JSON.stringify(userData));
+            showToast('✅ Categories selected: Technology, Business, Education', 'success');
+            updateUserInfo();
+        }
+        
+        function redirectToDiscovery() {
+            showToast('🔄 Redirecting to Event Discovery...', 'info');
+            setTimeout(() => {
+                window.location.href = 'event-discovery.html';
+            }, 1000);
+        }
+        
+        function clearUserData() {
+            localStorage.removeItem('userData');
+            showToast('🗑️ User data cleared!', 'info');
+            updateUserInfo();
+        }
+        
+        function updateUserInfo() {
+            const userData = localStorage.getItem('userData');
+            const userInfoDiv = document.getElementById('user-info');
+            const userDetailsDiv = document.getElementById('user-details');
+            
+            if (userData) {
+                const user = JSON.parse(userData);
+                userInfoDiv.style.display = 'block';
+                userDetailsDiv.innerHTML = `
+                    <p><strong>Name:</strong> ${user.name || 'Not set'}</p>
+                    <p><strong>Email:</strong> ${user.email || 'Not set'}</p>
+                    <p><strong>Categories:</strong> ${user.categories ? user.categories.join(', ') : 'None selected'}</p>
+                `;
+            } else {
+                userInfoDiv.style.display = 'none';
+            }
+        }
+        
+        function showToast(message, type = 'info', duration = 4000) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#00ff88' : type === 'error' ? '#ff4444' : '#333'};
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                z-index: 10000;
+                font-size: 14px;
+                font-weight: 500;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            `;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, duration);
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateUserInfo();
+        });
+    </script>
+</body>
+</html>

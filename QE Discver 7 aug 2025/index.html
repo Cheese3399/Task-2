@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickEvent - Delightful Events Start Here</title>
+    <meta name="description" content="Create, discover, and host amazing events with QuickEvent. Set up event pages, invite friends, and sell tickets seamlessly.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' rx='12' fill='%231a4d4d'/><path d='M20 20C20 18.8954 20.8954 18 22 18H78C79.1046 18 80 18.8954 80 20V80C80 81.1046 79.1046 82 78 82H22C20.8954 82 20 81.1046 20 80V20Z' fill='%2300ff88'/><path d='M30 30C30 29.4477 30.4477 29 31 29H69C69.5523 29 70 29.4477 70 30V70C70 70.5523 69.5523 71 69 71H31C30.4477 71 30 70.5523 30 70V30Z' fill='%231a4d4d'/><path d='M40 40C40 39.4477 40.4477 39 41 39H59C59.5523 39 60 39.4477 60 40V60C60 60.5523 59.5523 61 59 61H41C40.4477 61 40 60.5523 40 60V40Z' fill='%2300ff88'/><path d='M45 45C45 44.4477 45.4477 44 46 44H54C54.5523 44 55 44.4477 55 45V55C55 55.5523 54.5523 56 54 56H46C45.4477 56 45 55.5523 45 55V45Z' fill='%231a4d4d'/></svg>">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header class="header">
+        <div class="nav-brand">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <rect x="2" y="2" width="28" height="28" rx="6" fill="#1a4d4d"/>
+                        <path d="M8 8C8 6.89543 8.89543 6 10 6H22C23.1046 6 24 6.89543 24 8V24C24 25.1046 23.1046 26 22 26H10C8.89543 26 8 25.1046 8 24V8Z" fill="#00ff88"/>
+                        <path d="M10 8C10 7.44772 10.4477 7 11 7H21C21.5523 7 22 7.44772 22 8V22C22 22.5523 21.5523 23 21 23H11C10.4477 23 10 22.5523 10 22V8Z" fill="#1a4d4d"/>
+                        <path d="M12 10C12 9.44772 12.4477 9 13 9H19C19.5523 9 20 9.44772 20 10V20C20 20.5523 19.5523 21 19 21H13C12.4477 21 12 20.5523 12 20V10Z" fill="#00ff88"/>
+                        <path d="M14 12C14 11.4477 14.4477 11 15 11H17C17.5523 11 18 11.4477 18 12V18C18 18.5523 17.5523 19 17 19H15C14.4477 19 14 18.5523 14 18V12Z" fill="#1a4d4d"/>
+                    </svg>
+                </div>
+                <span class="logo-text">
+                    <span class="logo-quick">Quick</span><span class="logo-event">Event</span>
+                </span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="time-display">
+                <span id="current-time">16:05 GMT+5:30</span>
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <div class="desktop-nav">
+                <button class="btn btn-ghost" onclick="showSignInModal()" aria-label="Sign in to your account">Sign In</button>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Open mobile menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            
+            <!-- Avatar Dropdown (hidden by default, shown only when logged in) -->
+            <div class="avatar-dropdown" id="avatar-dropdown" style="display: none;">
+                <button class="avatar-btn" onclick="toggleAvatarDropdown()" aria-label="Toggle user menu" aria-expanded="false">
+                    <div class="avatar-image">
+                        <span class="avatar-initial">U</span>
+                    </div>
+                    <svg class="dropdown-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                </button>
+                
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <div class="dropdown-header">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <span class="avatar-initial">U</span>
+                            </div>
+                            <div class="user-details">
+                                <div class="user-name">User Name</div>
+                                <div class="user-email">user@email.com</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown-divider"></div>
+                    
+                    <div class="dropdown-items">
+                        <button class="dropdown-item" onclick="editProfile()">
+                            <svg class="dropdown-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
+                            <span>Edit Profile</span>
+                        </button>
+                        
+                        <button class="dropdown-item" onclick="viewSettings()">
+                            <svg class="dropdown-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"/>
+                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                            </svg>
+                            <span>Settings</span>
+                        </button>
+                        
+                        <button class="dropdown-item" onclick="viewHelp()">
+                            <svg class="dropdown-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                                <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            </svg>
+                            <span>Help & Support</span>
+                        </button>
+                    </div>
+                    
+                    <div class="dropdown-divider"></div>
+                    
+                    <div class="dropdown-items">
+                        <button class="dropdown-item logout-item" onclick="logout()">
+                            <svg class="dropdown-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                                <polyline points="16,17 21,12 16,7"/>
+                                <line x1="21" y1="12" x2="9" y2="12"/>
+                            </svg>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-nav" id="mobile-nav">
+        <div class="mobile-nav-header">
+            <h3 class="mobile-nav-title">Menu</h3>
+            <button class="mobile-nav-close" onclick="toggleMobileMenu()" aria-label="Close mobile menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <nav class="mobile-nav-items">
+            <a href="#" class="mobile-nav-item" onclick="toggleMobileMenu()">
+                <svg class="mobile-nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                </svg>
+                <span>Home</span>
+            </a>
+            <a href="event-discovery.html" class="mobile-nav-item" onclick="toggleMobileMenu()">
+                <svg class="mobile-nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="M21 21l-4.35-4.35"></path>
+                </svg>
+                <span>Discover Events</span>
+            </a>
+            <a href="#" class="mobile-nav-item" onclick="toggleMobileMenu()">
+                <svg class="mobile-nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                <span>Create Event</span>
+            </a>
+            <button class="mobile-nav-item signin-btn" onclick="showSignInModal(); toggleMobileMenu();">
+                <svg class="mobile-nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                    <polyline points="10,17 15,12 10,7"></polyline>
+                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                </svg>
+                <span>Sign In</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Main Hero Section -->
+    <main class="main">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        <span class="title-line">Discover</span>
+                        <span class="title-line">Perfect Events</span>
+                        <span class="title-line">for Your Business</span>
+                    </h1>
+                    <p class="hero-description">
+                        Find and connect with the best events that drive your business growth. Discover opportunities that matter.
+                    </p>
+                    <button class="btn btn-primary cta-button" onclick="window.location.href='event-discovery.html'">
+                        <span class="btn-text">Explore Events</span>
+                        <span class="btn-arrow">→</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                    
+
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="phone-container">
+                    <div class="phone-glow"></div>
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <!-- Phone Status Bar -->
+                            <div class="phone-status">
+                                <div class="status-left">
+                                    <span class="time">9:41</span>
+                                </div>
+                                <div class="status-right">
+                                    <div class="signal"></div>
+                                    <div class="wifi"></div>
+                                    <div class="battery"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Event Page Content -->
+                            <div class="event-content">
+                                <div class="event-header">
+                                    <div class="nav-icons">
+                                        <div class="nav-icon">+</div>
+                                        <div class="nav-icon">□</div>
+                                        <div class="nav-icon">🔍</div>
+                                        <div class="nav-icon">👤</div>
+                                    </div>
+                                    <button class="create-event-btn">Create Event</button>
+                                </div>
+                                
+                                <div class="event-banner">
+                                    <div class="banner-gradient"></div>
+                                    <h2 class="event-title">India Tech Expo 2025</h2>
+                                </div>
+                                
+                                <div class="event-details">
+                                    <div class="event-info">
+                                        <p class="event-host">Hosted by India Expo Centre</p>
+                                        <p class="event-time">📅 Friday, Sept 13 to Sunday, Sept 15 | 🕘 10:00 AM to 6:00 PM IST</p>
+                                        <p class="event-location">📍 India Expo Mart, Greater Noida, Delhi NCR</p>
+                                    </div>
+                                    
+                                    <div class="expo-stats">
+                                        <div class="stat-item">
+                                            <span class="stat-icon">👥</span>
+                                            <span class="stat-number">20k</span>
+                                            <span class="stat-label">Visitors</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-icon">🏢</span>
+                                            <span class="stat-number">120</span>
+                                            <span class="stat-label">Booths</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-icon">💼</span>
+                                            <span class="stat-number">8</span>
+                                            <span class="stat-label">Sponsors</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="event-actions">
+                                        <div class="countdown">
+                                            <span class="countdown-text">Starts in 32 Days</span>
+                                        </div>
+                                        <div class="cta-buttons">
+                                            <button class="cta-btn primary" onclick="window.location.href='/#floorplan'">Book a Stall</button>
+                                            <button class="cta-btn secondary" onclick="window.location.href='/#visitor'">Visit Expo</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="guest-list">
+                                        <h3 class="guest-title">58 Exhibitors Confirmed</h3>
+                                        <div class="guest-avatars">
+                                            <div class="avatar">🏢</div>
+                                            <div class="avatar">💻</div>
+                                            <div class="avatar">🔧</div>
+                                            <div class="avatar">+55</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="sponsor-section">
+                                        <div class="sponsor-content">
+                                            <div class="sponsor-icon">💼</div>
+                                            <div class="sponsor-text">
+                                                <h4 class="sponsor-title">Sponsor this Expo</h4>
+                                                <p class="sponsor-description">Get premium branding & reach 20,000+ visitors.</p>
+                                            </div>
+                                        </div>
+                                        <button class="sponsor-btn" onclick="window.location.href='/#sponsor'">Become a Sponsor</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Floating 3D Icons -->
+                <div class="floating-icons">
+                    <div class="floating-icon calendar-icon" data-tooltip="Calendar">
+                        <span>23</span>
+                    </div>
+                    <div class="floating-icon megaphone-icon" data-tooltip="Announcements">
+                        📢
+                    </div>
+                    <div class="floating-icon party-icon" data-tooltip="Celebration">
+                        🎉
+                    </div>
+                    <div class="floating-icon sphere-icon" data-tooltip="Community">
+                        <div class="sphere-glow"></div>
+                    </div>
+                    <div class="floating-icon star-icon" data-tooltip="Featured">
+                        ⭐
+                    </div>
+                    <div class="floating-icon music-icon" data-tooltip="Music">
+                        🎵
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="footer-content">
+            <!-- Left Side: Navigation Links -->
+            <nav class="footer-nav" role="navigation" aria-label="Footer navigation">
+                <div class="footer-left">
+                    <a href="/discover" class="footer-link" title="Browse and discover events">
+                        <span class="link-text">Discover Events</span>
+                        <span class="link-icon" aria-hidden="true">🔍</span>
+                    </a>
+                    <a href="/pricing" class="footer-link" title="View pricing plans and features">
+                        <span class="link-text">Pricing Plans</span>
+                        <span class="link-icon" aria-hidden="true">💰</span>
+                    </a>
+                    <a href="/help" class="footer-link" title="Get help and support">
+                        <span class="link-text">Help Center</span>
+                        <span class="link-icon" aria-hidden="true">❓</span>
+                    </a>
+                    <a href="/terms" class="footer-link" title="Terms of service">
+                        <span class="link-text">Terms</span>
+                        <span class="link-icon" aria-hidden="true">📄</span>
+                    </a>
+                    <a href="/privacy" class="footer-link" title="Privacy policy">
+                        <span class="link-text">Privacy</span>
+                        <span class="link-icon" aria-hidden="true">🔒</span>
+                    </a>
+                    <a href="/security" class="footer-link" title="Security information">
+                        <span class="link-text">Security</span>
+                        <span class="link-icon" aria-hidden="true">🛡️</span>
+                    </a>
+                </div>
+            </nav>
+            
+            <!-- Right Side: Social Icons -->
+            <div class="footer-social" role="group" aria-label="Social media links">
+                <a href="#" 
+                   class="social-link" 
+                   aria-label="Download or share Quick Events"
+                   rel="noopener noreferrer"
+                   target="_blank">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="7,10 12,15 17,10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span class="sr-only">Download/Share</span>
+                </a>
+                <a href="#" 
+                   class="social-link" 
+                   aria-label="Follow Quick Events on Facebook"
+                   rel="noopener noreferrer"
+                   target="_blank">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                    </svg>
+                    <span class="sr-only">Facebook</span>
+                </a>
+                <a href="#" 
+                   class="social-link" 
+                   aria-label="More options for Quick Events"
+                   rel="noopener noreferrer"
+                   target="_blank">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <circle cx="12" cy="12" r="1"></circle>
+                        <circle cx="19" cy="12" r="1"></circle>
+                        <circle cx="5" cy="12" r="1"></circle>
+                    </svg>
+                    <span class="sr-only">More Options</span>
+                </a>
+                <a href="#" 
+                   class="social-link" 
+                   aria-label="Follow Quick Events on Instagram"
+                   rel="noopener noreferrer"
+                   target="_blank">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                    <span class="sr-only">Instagram</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Footer Bottom: Additional Info -->
+        <div class="footer-bottom">
+            <div class="footer-info">
+                <p class="footer-copyright">© 2025 Quick Events. All rights reserved.</p>
+                <p class="footer-version">Version 2.1.0</p>
+            </div>
+            <div class="footer-actions">
+                <button class="footer-btn" id="accessibility-toggle" aria-label="Toggle accessibility features">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M12 1v6m0 6v6"></path>
+                    </svg>
+                    <span>Accessibility</span>
+                </button>
+                <button class="footer-btn" id="feedback-btn" aria-label="Send feedback">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <span>Feedback</span>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Sign In Modal -->
+    <div id="signin-modal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="signin-title">
+            <div class="modal-header">
+                <h2 id="signin-title" class="modal-title">Sign In</h2>
+                <button class="modal-close" onclick="closeSignInModal()" aria-label="Close sign in modal">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M18 6L6 18M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- Step 1: Email/Mobile Input -->
+                <div id="step-1" class="auth-step">
+                    <form id="signin-form" class="auth-form">
+                        <div class="form-group">
+                            <div class="input-wrapper">
+                                <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email" autocomplete="email" inputmode="email" required>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="auth-btn">
+                            <span class="btn-text">Continue</span>
+                            <div class="btn-loading">
+                                <div class="spinner"></div>
+                            </div>
+                        </button>
+                    </form>
+                    
+                    <div class="auth-divider">
+                        <span class="divider-text">OR</span>
+                    </div>
+                    
+                    <div class="social-auth">
+                        <button class="social-btn google-btn">
+                            <svg class="social-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"></path>
+                                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"></path>
+                                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"></path>
+                                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"></path>
+                            </svg>
+                            <span>Sign in with Google</span>
+                        </button>
+                        
+                        <button class="social-btn linkedin-btn">
+                            <svg class="social-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                                <rect x="2" y="9" width="4" height="12"></rect>
+                                <circle cx="4" cy="4" r="2"></circle>
+                            </svg>
+                            <span>Sign in with LinkedIn</span>
+                        </button>
+                    </div>
+                    
+                    <div class="auth-footer">
+                        <p class="auth-text">Don't have an account? <a href="#signup" class="auth-link" onclick="showSignUpModal()">Sign up</a></p>
+                    </div>
+                </div>
+
+                <!-- Step 2: OTP Verification -->
+                <div id="step-2" class="auth-step" style="display: none;">
+                    <div class="otp-header">
+                        <button class="back-btn" onclick="goBackToStep1()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 12H5M12 19l-7-7 7-7"/>
+                            </svg>
+                        </button>
+                        <div class="otp-info">
+                            <h3 class="otp-title">Enter verification code</h3>
+                            <p class="otp-subtitle">We've sent a 6-digit code to <span id="otp-email-display"></span></p>
+                        </div>
+                    </div>
+                    <form id="otp-form" class="auth-form">
+                        <div class="otp-input-group">
+                            <input type="text" class="otp-input" maxlength="1" data-index="0">
+                            <input type="text" class="otp-input" maxlength="1" data-index="1">
+                            <input type="text" class="otp-input" maxlength="1" data-index="2">
+                            <input type="text" class="otp-input" maxlength="1" data-index="3">
+                            <input type="text" class="otp-input" maxlength="1" data-index="4">
+                            <input type="text" class="otp-input" maxlength="1" data-index="5">
+                        </div>
+                        <button type="submit" class="btn btn-primary auth-btn">
+                            <span class="btn-text">Verify & Continue</span>
+                            <div class="btn-loading">
+                                <div class="spinner"></div>
+                            </div>
+                        </button>
+                    </form>
+                    <div class="otp-footer">
+                        <p class="otp-text">Didn't receive the code? <a href="#" class="otp-link link" onclick="resendOTP()">Resend</a></p>
+                        <div class="otp-timer" id="otp-timer">
+                            <span>Resend in <span id="timer-count">30</span>s</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Category Selection -->
+                <div id="step-3" class="auth-step" style="display: none;">
+                    <div class="category-header">
+                        <button class="category-back-btn" onclick="goBackToStep2()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 12H5M12 19l-7-7 7-7"/>
+                            </svg>
+                        </button>
+                        <h3 class="category-title">Choose one or more to personalize your experience</h3>
+                        
+                    </div>
+                    
+                    <div class="category-grid">
+                        <div class="category-card" data-category="agriculture-forestry">
+                            <div class="category-icon">🌾</div>
+                            <div class="category-name">Agriculture & Forestry</div>
+                        </div>
+                        <div class="category-card" data-category="animals-pets">
+                            <div class="category-icon">🐾</div>
+                            <div class="category-name">Animals & Pets</div>
+                        </div>
+                        <div class="category-card" data-category="apparel-clothing">
+                            <div class="category-icon">👕</div>
+                            <div class="category-name">Apparel & Clothing</div>
+                        </div>
+                        <div class="category-card" data-category="arts-crafts">
+                            <div class="category-icon">🎨</div>
+                            <div class="category-name">Arts & Crafts</div>
+                        </div>
+                        <div class="category-card" data-category="auto-automotive">
+                            <div class="category-icon">🚗</div>
+                            <div class="category-name">Auto & Automotive</div>
+                        </div>
+                        <div class="category-card" data-category="baby-kids-maternity">
+                            <div class="category-icon">👶</div>
+                            <div class="category-name">Baby, Kids & Maternity</div>
+                        </div>
+                        <div class="category-card" data-category="banking-finance">
+                            <div class="category-icon">💰</div>
+                            <div class="category-name">Banking & Finance</div>
+                        </div>
+                        <div class="category-card" data-category="fashion-beauty">
+                            <div class="category-icon">💄</div>
+                            <div class="category-name">Fashion & Beauty</div>
+                        </div>
+                        <div class="category-card" data-category="food-beverages">
+                            <div class="category-icon">🍽️</div>
+                            <div class="category-name">Food & Beverages</div>
+                        </div>
+                        <div class="category-card" data-category="building-construction">
+                            <div class="category-icon">🏗️</div>
+                            <div class="category-name">Building & Construction</div>
+                        </div>
+                        <div class="category-card" data-category="business-services">
+                            <div class="category-icon">💼</div>
+                            <div class="category-name">Business Services</div>
+                        </div>
+                        <div class="category-card" data-category="security-defense">
+                            <div class="category-icon">🛡️</div>
+                            <div class="category-name">Security & Defense</div>
+                        </div>
+                        <div class="category-card" data-category="education-training">
+                            <div class="category-icon">🎓</div>
+                            <div class="category-name">Education & Training</div>
+                        </div>
+                        <div class="category-card" data-category="electric-electronics">
+                            <div class="category-icon">⚡</div>
+                            <div class="category-name">Electric & Electronics</div>
+                        </div>
+                        <div class="category-card" data-category="power-energy">
+                            <div class="category-icon">⚡</div>
+                            <div class="category-name">Power & Energy</div>
+                        </div>
+                        <div class="category-card" data-category="industrial-engineering">
+                            <div class="category-icon">⚙️</div>
+                            <div class="category-name">Industrial Engineering</div>
+                        </div>
+                        <div class="category-card" data-category="entertainment-media">
+                            <div class="category-icon">🎬</div>
+                            <div class="category-name">Entertainment & Media</div>
+                        </div>
+                        <div class="category-card" data-category="environment-waste">
+                            <div class="category-icon">🌿</div>
+                            <div class="category-name">Environment & Waste</div>
+                        </div>
+                        <div class="category-card" data-category="wellness-health-fitness">
+                            <div class="category-icon">🧘</div>
+                            <div class="category-name">Wellness, Health & Fitness</div>
+                        </div>
+                        <div class="category-card" data-category="home-office">
+                            <div class="category-icon">🏠</div>
+                            <div class="category-name">Home & Office</div>
+                        </div>
+                        <div class="category-card" data-category="hospitality">
+                            <div class="category-icon">🏨</div>
+                            <div class="category-name">Hospitality</div>
+                        </div>
+                        <div class="category-card" data-category="it-technology">
+                            <div class="category-icon">💻</div>
+                            <div class="category-name">IT & Technology</div>
+                        </div>
+                        <div class="category-card" data-category="logistics-transportation">
+                            <div class="category-icon">🚚</div>
+                            <div class="category-name">Logistics & Transportation</div>
+                        </div>
+                        <div class="category-card" data-category="medical-pharma">
+                            <div class="category-icon">🏥</div>
+                            <div class="category-name">Medical & Pharma</div>
+                        </div>
+                        <div class="category-card" data-category="miscellaneous">
+                            <div class="category-icon">📦</div>
+                            <div class="category-name">Miscellaneous</div>
+                        </div>
+                        <div class="category-card" data-category="packing-packaging">
+                            <div class="category-icon">📦</div>
+                            <div class="category-name">Packing & Packaging</div>
+                        </div>
+                        <div class="category-card" data-category="science-research">
+                            <div class="category-icon">🧪</div>
+                            <div class="category-name">Science & Research</div>
+                        </div>
+                        <div class="category-card" data-category="telecommunication">
+                            <div class="category-icon">📡</div>
+                            <div class="category-name">Telecommunication</div>
+                        </div>
+                        <div class="category-card" data-category="travel-tourism">
+                            <div class="category-icon">🌍</div>
+                            <div class="category-name">Travel & Tourism</div>
+                        </div>
+                    </div>
+                    
+                    <div class="category-footer">
+                        <div class="category-counter" id="category-counter">
+                            <span>0 Categories Selected</span>
+                        </div>
+                        <button type="button" class="btn btn-primary category-continue-btn" onclick="completeOnboarding()">
+                            <span class="btn-text">Continue</span>
+                            <div class="btn-loading">
+                                <div class="spinner"></div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign Up Modal -->
+    <div id="signup-modal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Create Account</h2>
+                <button class="modal-close" onclick="closeSignUpModal()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <form id="signup-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="signup-name" class="form-label">Full Name</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <input type="text" id="signup-name" name="name" class="form-input" placeholder="Enter your full name" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-email" class="form-label">Email</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            <input type="email" id="signup-email" name="email" class="form-input" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-password" class="form-label">Password</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <circle cx="12" cy="16" r="1"></circle>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <input type="password" id="signup-password" name="password" class="form-input" placeholder="Create a password" required>
+                            <button type="button" class="password-toggle" onclick="toggleSignUpPassword()">
+                                <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <span class="checkmark"></span>
+                            <span class="checkbox-label">I agree to the <a href="#terms" class="link">Terms of Service</a> and <a href="#privacy" class="link">Privacy Policy</a></span>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary auth-btn">
+                        <span class="btn-text">Create Account</span>
+                        <div class="btn-loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </button>
+                </form>
+                
+                <div class="auth-divider">
+                    <span class="divider-text">or</span>
+                </div>
+                
+                <div class="social-auth">
+                    <button class="social-btn google-btn">
+                        <svg class="social-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"></path>
+                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"></path>
+                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"></path>
+                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"></path>
+                        </svg>
+                        <span>Sign up with Google</span>
+                    </button>
+                    
+                    <button class="social-btn github-btn">
+                        <svg class="social-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                        </svg>
+                        <span>Sign up with GitHub</span>
+                    </button>
+                </div>
+                
+                <div class="auth-footer">
+                    <p class="auth-text">Already have an account? <a href="#signin" class="auth-link" onclick="showSignInModal()">Sign in</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Animation Container for Particles -->
+    <div class="particles-container">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Toast Notification System -->
+    <div class="toast-container" id="toast-container"></div>
+    
+    <script src="script.js"></script>
+</body>
+</html> 

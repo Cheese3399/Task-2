@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Replacement Test - QuickEvent</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #1a1a1a;
+            color: white;
+            padding: 2rem;
+        }
+        .test-section {
+            background: #2a2a2a;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+        .registration-buttons {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .registration-btn {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%);
+            border: 2px solid rgba(0, 255, 136, 0.6);
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            color: #00ff88;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .registration-btn:hover {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2) 0%, rgba(0, 255, 136, 0.1) 100%);
+            transform: translateY(-2px);
+        }
+        .ticket-status-banner {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.9) 0%, rgba(0, 204, 106, 0.8) 100%);
+            color: #1a1a1a;
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .test-btn {
+            background: #00ff88;
+            color: #1a1a1a;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 0.5rem;
+        }
+        .debug-info {
+            background: #333;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Button Replacement Debug Test</h1>
+    
+    <div class="test-section">
+        <h2>Current Status</h2>
+        <div class="debug-info" id="debugInfo">
+            Loading debug information...
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Registration Buttons (Before)</h2>
+        <div class="registration-buttons" id="registrationButtons">
+            <button class="registration-btn" onclick="showRegistrationModal()">Visitor</button>
+            <button class="registration-btn" onclick="showRegistrationModal()">Exhibitor</button>
+            <button class="registration-btn" onclick="showRegistrationModal()">Apply for Booth</button>
+            <button class="registration-btn" onclick="showRegistrationModal()">Sponsor</button>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Ticket Buttons (After Registration)</h2>
+        <div class="registration-buttons" id="ticketButtons" style="display: none;">
+            <button class="registration-btn" onclick="showMyTicket()">My Ticket</button>
+            <button class="registration-btn" onclick="showEventInfo()">Event Info</button>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Ticket Status Banner</h2>
+        <div class="ticket-status-banner" id="ticketStatusBanner" style="display: none;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="background: #1a1a1a; color: #00ff88; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px;">✅</div>
+                <div>
+                    <div style="font-weight: bold; font-size: 1.1rem;">Ticket Confirmed</div>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">Entry pass ready for Aug 5-7, 2025</div>
+                </div>
+            </div>
+            <div style="background: #1a1a1a; color: #00ff88; padding: 8px 16px; border-radius: 8px; font-weight: bold; font-size: 0.9rem;">🎫 VISITOR PASS</div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Controls</h2>
+        <button class="test-btn" onclick="testButtonReplacement()">🧪 Test Button Replacement</button>
+        <button class="test-btn" onclick="resetButtonState()">🔄 Reset Button State</button>
+        <button class="test-btn" onclick="checkCurrentState()">🔍 Check Current State</button>
+        <button class="test-btn" onclick="window.open('http://localhost:9008/event-detail.html?tab=about', '_blank')">🌐 Open Real Page</button>
+        <button class="test-btn" onclick="window.open('http://localhost:9008/event-detail.html?tab=about&visitor=registered&ticket=1733775000000', '_blank')">🎫 Open Registered Page</button>
+    </div>
+    
+    <script>
+        function showRegistrationModal() {
+            alert('Registration modal would open here');
+        }
+        
+        function showMyTicket() {
+            alert('My Ticket modal would open here');
+        }
+        
+        function showEventInfo() {
+            alert('Event Info modal would open here');
+        }
+        
+        function testButtonReplacement() {
+            console.log('🧪 Testing button replacement...');
+            
+            // Simulate visitor registration
+            const testVisitorData = {
+                firstName: 'Test',
+                lastName: 'User',
+                email: 'test@example.com',
+                mobile: '1234567890'
+            };
+            
+            localStorage.setItem('visitorData', JSON.stringify(testVisitorData));
+            
+            // Hide registration buttons, show ticket buttons
+            const registrationButtons = document.getElementById('registrationButtons');
+            const ticketButtons = document.getElementById('ticketButtons');
+            const ticketStatusBanner = document.getElementById('ticketStatusBanner');
+            
+            if (registrationButtons && ticketButtons) {
+                registrationButtons.style.display = 'none';
+                ticketButtons.style.display = 'flex';
+                console.log('✅ Button replacement successful');
+            }
+            
+            if (ticketStatusBanner) {
+                ticketStatusBanner.style.display = 'flex';
+            }
+            
+            updateDebugInfo();
+            alert('✅ Button replacement test completed! Check the page.');
+        }
+        
+        function resetButtonState() {
+            console.log('🔄 Resetting button state...');
+            
+            localStorage.removeItem('visitorData');
+            
+            const registrationButtons = document.getElementById('registrationButtons');
+            const ticketButtons = document.getElementById('ticketButtons');
+            const ticketStatusBanner = document.getElementById('ticketStatusBanner');
+            
+            if (registrationButtons) registrationButtons.style.display = 'flex';
+            if (ticketButtons) ticketButtons.style.display = 'none';
+            if (ticketStatusBanner) ticketStatusBanner.style.display = 'none';
+            
+            updateDebugInfo();
+            console.log('✅ Button state reset complete');
+        }
+        
+        function checkCurrentState() {
+            updateDebugInfo();
+        }
+        
+        function updateDebugInfo() {
+            const debugInfo = document.getElementById('debugInfo');
+            const visitorData = localStorage.getItem('visitorData');
+            const registrationButtons = document.getElementById('registrationButtons');
+            const ticketButtons = document.getElementById('ticketButtons');
+            const ticketStatusBanner = document.getElementById('ticketStatusBanner');
+            
+            const info = `
+URL: ${window.location.href}
+Visitor Data: ${visitorData ? 'Found' : 'Not found'}
+Registration Buttons: ${registrationButtons ? registrationButtons.style.display : 'Not found'}
+Ticket Buttons: ${ticketButtons ? ticketButtons.style.display : 'Not found'}
+Ticket Banner: ${ticketStatusBanner ? ticketStatusBanner.style.display : 'Not found'}
+Current Time: ${new Date().toLocaleTimeString()}
+            `;
+            
+            debugInfo.textContent = info;
+        }
+        
+        // Update debug info on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDebugInfo();
+        });
+    </script>
+</body>
+</html>
